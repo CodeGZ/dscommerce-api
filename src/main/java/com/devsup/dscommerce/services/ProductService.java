@@ -4,10 +4,12 @@ import com.devsup.dscommerce.dto.ProductDTO;
 import com.devsup.dscommerce.entities.Product;
 import com.devsup.dscommerce.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -28,5 +30,19 @@ public class ProductService {
         return dto;
     }
    */
+
+    @Transactional(readOnly = true)
+    public Page<ProductDTO> findAll(Pageable pageable){
+        Page<Product> result = repository.findAll(pageable);
+        return result.map(x -> new ProductDTO(x));
+    }
+/*
+    @Transactional(readOnly = true)
+    public List<ProductDTO> findAll(){
+        List<Product> result = repository.findAll();
+        return result.stream().map(x -> new ProductDTO(x)).toList();
+    }
+ */
+
 
 }
